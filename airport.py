@@ -25,7 +25,8 @@ def IsSchengenAirport(code):
 
 
 def SetSchengen(airport):
-    airport.schengen = IsSchengenAirport(airport.ICAO)
+    resultat = IsSchengenAirport(airport.ICAO)
+    airport.schengen=resultat
 
 
 def PrintAirport(airport):
@@ -79,8 +80,8 @@ def LoadAirports(filename):
         latitud=graus_lat + minuts_lat/60 + segons_lat/3600
         longitud=graus_lon + minuts_lon/60 + segons_lon/3600
 
-
-        aeroports.append([parts[0],latitud,longitud])
+        nou=Airport(parts[0],latitud,longitud)
+        aeroports.append(nou)
         linea=file.readline()
     return aeroports
 
@@ -88,36 +89,23 @@ def LoadAirports(filename):
 
 
 def SaveSchengenAirports(airports,filename):
+
     if len(airports)==0:
         return -1
     try:
         f=open(filename, "w")
         f.write("CODE LAT LON\n")
 
-        siSchengen=False
+
         i=0
         while i < len(airports):
             A=airports[i]
             if A.schengen==True:
-                siSchengen=True
-                if A.latitude >=0:
-                    lat_dir="N"
-                else:
-                    lat_dir="S"
-                lat_str=lat_dir+str(int(A.latitude))
-                if A.longitude >=0:
-                    lon_dir="E"
-                else:
-                    lon_dir="W"
-                lon_str=lon_dir+str(int(A.longitude))
 
-                f.write(A.ICAO+" "+lat_str+" "+lon_str+"\n")
+                f.write(A.ICAO+" "+str(A.latitude)+" "+str(A.longitude)+"\n")
             i=i+1
         f.close()
-        if siSchengen==True:
-            return 0
-        else:
-            return -1
+
     except:
         return -1
 
@@ -128,11 +116,10 @@ def AddAirport(airports,airport):
         if airports[i].ICAO == airport.ICAO:
             trobat=True
         i=i+1
-    if trobat:
-        return -1
-    else:
-        airports.append(airport)
+    if not trobat:
+        airports.append(airports[i])
         return 0
+
 
 def RemoveAirport(airports,code):
     i=0
