@@ -11,17 +11,19 @@ EsSc=['LO', 'EB', 'LK', 'LC', 'EK', 'EE', 'EF', 'LF', 'ED', 'LG', 'EH', 'LH', 'B
 
 
 def IsSchengenAirport(code):
-    Schengen = False
-    if code == " ":
-        Schengen = False
-    else:
-        i = 0
-        while i < len(EsSc) and not Schengen:
-            if code[0:2] == EsSc[i]:
-                Schengen = True
-            else:
-                i = i + 1
-        return Schengen
+
+
+   Schengen= False
+   if code==" ":
+       Schengen= False
+   else:
+       i = 0
+       while i<len(EsSc) and not Schengen:
+           if code[0:2]==EsSc[i]:
+               Schengen= True
+           else:
+               i=i+1
+       return Schengen
 
 
 def SetSchengen(airport):
@@ -39,50 +41,50 @@ def PrintAirport(airport):
 
 
 def LoadAirports(filename):
-    aeroports=[]
+   aeroports=[]
 
-    try:
-        file=open(filename, "r")
-    except FileNotFoundError:
-        return aeroports
+   try:
+       file=open(filename, "r")
+   except FileNotFoundError:
+       return aeroports
 
-    file.readline()
-    linea=file.readline()
-
-
-    while linea != "":
-        parts= linea.split(" ")
+   file.readline()
+   linea=file.readline()
 
 
-        latitud = parts[1]
-        longitud=parts[2]
+   while linea != "":
+       parts= linea.split(" ")
 
 
-        graus_lat=float(latitud[1:3])
-        minuts_lat=float(latitud[3:5])
-        segons_lat=float(latitud[5:7])
+       latitud = parts[1]
+       longitud=parts[2]
 
 
-        graus_lon=float(longitud[1:3])
-        minuts_lon=float(longitud[3:5])
-        segons_lon=float(longitud[5:7])
+       graus_lat=float(latitud[1:3])
+       minuts_lat=float(latitud[3:5])
+       segons_lat=float(latitud[5:7])
 
 
-        if latitud[0]=="S":
-            graus_lat=graus_lat*(-1)
+       graus_lon=float(longitud[1:3])
+       minuts_lon=float(longitud[3:5])
+       segons_lon=float(longitud[5:7])
 
 
-        if longitud[0]=="W":
-            graus_lon=graus_lon*(-1)
+       if latitud[0]=="S":
+           graus_lat=graus_lat*(-1)
 
 
-        latitud=graus_lat + minuts_lat/60 + segons_lat/3600
-        longitud=graus_lon + minuts_lon/60 + segons_lon/3600
+       if longitud[0]=="W":
+           graus_lon=graus_lon*(-1)
 
 
-        aeroports.append([parts[0],latitud,longitud])
-        linea=file.readline()
-    return aeroports
+       latitud=graus_lat + minuts_lat/60 + segons_lat/3600
+       longitud=graus_lon + minuts_lon/60 + segons_lon/3600
+
+
+       aeroports.append([parts[0],latitud,longitud])
+       linea=file.readline()
+   return aeroports
 
 
 
